@@ -1,17 +1,17 @@
 package com.ashokslsk.builditbigger;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Pair;
+import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.ashokslsk.JokeProvider;
 import com.ashokslsk.builditbigger.data.EndpointsAsyncTask;
 import com.ashokslsk.joketeller.JokeDisplayingActivity;
 
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+
     }
 
     @OnClick(R.id.main_b_show_joke)
@@ -47,10 +48,15 @@ public class MainActivity extends AppCompatActivity {
 //        i.putExtra(JokeDisplayingActivity.EXTRA_JOKE, JokeProvider.getNewJoke());
 //        startActivity(i);
 
-        // From Google cloud endpoint
-        final AsyncTask<Pair<Context, EndpointsAsyncTask.GotJokeCallback>, Void, String> processGetJoke = new EndpointsAsyncTask();
+
+        final AsyncTask<EndpointsAsyncTask.GotJokeCallback, Void, String> processGetJoke = new EndpointsAsyncTask();
+
+        ProgressBar pb = new ProgressBar(this);
+        pb.setIndeterminate(true);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Loading joke please wait...")
+        builder.setMessage("Loading joke. Please wait...")
+                .setView(pb)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -62,16 +68,20 @@ public class MainActivity extends AppCompatActivity {
         final AlertDialog dialog = builder.create();
         dialog.show();
 
-        processGetJoke.execute(new Pair<Context, EndpointsAsyncTask.GotJokeCallback>(this, new EndpointsAsyncTask.GotJokeCallback() {
+        processGetJoke.execute(new EndpointsAsyncTask.GotJokeCallback() {
             @Override
-            public void done() {
+            public void done(String result, boolean error) {
                 dialog.dismiss();
-                Intent i = new Intent(MainActivity.this, JokeDisplayingActivity.class);
-                i.putExtra(JokeDisplayingActivity.EXTRA_JOKE, JokeProvider.getNewJoke());
-                startActivity(i);
+                if (error) {
+                    Log.e("error text", result);
+                    Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent i = new Intent(MainActivity.this, JokeDisplayingActivity.class);
+                    i.putExtra(JokeDisplayingActivity.EXTRA_JOKE, result);
+                    startActivity(i);
+                }
             }
-        }));
-
-
+        });
     }
+
 }
