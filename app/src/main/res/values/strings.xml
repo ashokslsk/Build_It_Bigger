@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Build It Bigger</string>
+    <string name="loading_joke_wait_titile">Loading joke. Please wait...</string>
+    <string name="show_joke">Show Joke</string>
 </resources>

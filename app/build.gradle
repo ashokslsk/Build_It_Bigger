@@ -17,6 +17,16 @@ android {
         incremental true
     }
 
+    productFlavors {
+        free{
+            applicationId 'com.ashokslsk.builditbigger.free'
+        }
+
+        paid{
+            applicationId 'com.ashokslsk.builditbigger.paid'
+        }
+    }
+
 
     buildTypes {
         release {
@@ -33,11 +43,14 @@ dependencies {
     //Libraries added
     compile project(":jokeprovider")
     compile project(":joketeller")
+    compile project(path: ':backend', configuration: 'android-endpoints')
 
 
+    //Other libraries
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.android.support:design:23.0.0'
     compile 'com.android.support:cardview-v7:23.0.0'
-    compile project(path: ':backend', configuration: 'android-endpoints')
+    freeCompile 'com.google.android.gms:play-services-ads:9.0.1'
+
 }
