@@ -86,7 +86,7 @@ public class MainFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(con);
         builder.setMessage(R.string.loading_joke_wait_titile)
                 .setView(pb)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(com.ashokslsk.builditbigger.R.string.Cancel_button_name), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         processGetJoke.cancel(true);
@@ -102,7 +102,7 @@ public class MainFragment extends Fragment {
             public void done(final String result, boolean error) {
                 dialog.dismiss();
                 if (error) {
-                    Log.e("error text", result);
+                    Log.e(getString(com.ashokslsk.builditbigger.R.string.error_string_text), result);
                     Toast.makeText(con, result, Toast.LENGTH_SHORT).show();
                 } else {
                     mInterstitialAd.setAdListener(new AdListener() {

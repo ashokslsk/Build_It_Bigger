@@ -2,4 +2,6 @@
     <string name="app_name">Build It Bigger</string>
     <string name="loading_joke_wait_titile">Loading joke. Please wait...</string>
     <string name="show_joke">Show Joke</string>
+    <string name="Cancel_button_name">Cancel</string>
+    <string name="error_string_text">error text</string>
 </resources>
